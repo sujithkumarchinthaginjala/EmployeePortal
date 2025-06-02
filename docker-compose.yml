@@ -1,0 +1,26 @@
+services:
+  mysql:
+    image: mysql:8.3
+    container_name: mysql
+    environment:
+      MYSQL_DATABASE: payslipgenerator
+      MYSQL_ROOT_PASSWORD: Sujith@142
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  app:
+    build: .  # Builds the Dockerfile in current directory
+    container_name: springboot-app
+    depends_on:
+      - mysql
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/payslipgenerator
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: Sujith@142
+    ports:
+      - "8080:8080"
+    entrypoint: ["sh", "-c", "until nc -z mysql 3306; do sleep 2; done; java -jar app.jar"]
+volumes:
+  mysql_data:

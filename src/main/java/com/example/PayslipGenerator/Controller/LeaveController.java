@@ -28,7 +28,6 @@ public class LeaveController {
         return ResponseEntity.ok(leaveService.getEmployeeLeaves(id));
     }
 
-    @PutMapping("/admin/leave/{id}/status")
     @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<String> updateLeaveStatus(
             @PathVariable Long id,
