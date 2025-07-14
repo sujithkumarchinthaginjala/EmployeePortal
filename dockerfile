@@ -9,6 +9,8 @@ RUN apt-get update \
 
 COPY target/MyApp.jar app.jar
 
-EXPOSE 8080
+EXPOSE 8080 3306
 
-ENTRYPOINT ["java", "-jar", "app.jar"]
+CMD service mysql start && \
+    until nc -z localhost 3306; do sleep 1; done && \
+    java -jar app.jar
