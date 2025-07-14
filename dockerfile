@@ -3,7 +3,7 @@ FROM openjdk:21-jdk-slim
 WORKDIR /app
 
 RUN apt-get update \
-    && apt-get install -y netcat-openbsd \
+    && apt-get install -y netcat-openbsd default-mysql-server \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
