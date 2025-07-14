@@ -2,13 +2,17 @@ FROM openjdk:21-jdk-slim
 
 WORKDIR /app
 
+# Install netcat
 RUN apt-get update && \
     apt-get install -y netcat-openbsd && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/*
+    apt-get clean && rm -rf /var/lib/apt/lists/*
 
+# Copy app and wait script
 COPY target/MyApp.jar app.jar
+COPY wait-for-it.sh wait-for-it.sh
+
+RUN chmod +x wait-for-it.sh
 
 EXPOSE 8080
 
-ENTRYPOINT ["sh", "-c", "until nc -z mysql 3306; do sleep 2; done; java -jar app.jar"]
+ENTRYPOINT ["./wait-for-it.sh", "mysql:3306", "--", "java", "-jar", "app.jar"]
