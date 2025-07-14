@@ -9,6 +9,6 @@ RUN apt-get update && \
 
 COPY target/MyApp.jar app.jar
 
-EXPOSE 8080 3306
+EXPOSE 8080
 
-ENTRYPOINT ["sh", "-c", "until nc -z mysql 3307; do sleep 2; done; java -jar app.jar"]
+ENTRYPOINT ["sh", "-c", "until nc -z mysql 3306; do sleep 2; done; java -jar app.jar"]
